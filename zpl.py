@@ -24,14 +24,9 @@ ALL = W+E+N+S
 root = Tk()
 root.title("2PL017")
 
-
-    
-
-
 row_logo = 0
 row_filters = 1
 row_filters1 = 2
-
 row_filters = 3
 row_listbox = 4
 row_buttons_top = 5
@@ -97,7 +92,6 @@ class Application(Frame):
                 self.version_filter.insert(END, "Linux Kernel Version")
                 self.version_filter.pack(fill=X,side=LEFT)
 
-
                 '''____________________________________________'''
 
                 frame2 = Frame(root, width=main_width)
@@ -123,9 +117,8 @@ class Application(Frame):
                 filt_label.pack(side=LEFT)
                 # use entry widget to display filters
                 self.enter1 = Entry(frame3)
-                #enter1.insert(0, 'Applied filters')
-
                 self.enter1.pack(fill=X,side=LEFT, expand=True)
+                
                 # pressing the return key will update the filters
                 ####HACER ESTO, QUE PUEDA COGER EL TEXTO DE AQUI, DETECTAR SI SE HA BORRADO ALGUN FILTRO, Y ACTUALIZAR LISTA
                 #enter1.bind('<Return>', set_filters)
@@ -149,16 +142,10 @@ class Application(Frame):
                 self.listbox1.bind('<ButtonRelease-1>', self.get_list)
 
                 '''____________________________________________'''
-
-
                 
                 self.contents = Text(root)
-
                 self.contents.grid(row=rowcontents, column=0, columnspan=1,sticky="ew")
-                #contents.focus_set()
-                #rowcontents=0
-                #coltext=2
-                #contents.grid(row=rowcontents, column=coltext, rowspan=5,sticky="ewns")
+
                 coltext=0
                 yscroll1 = Scrollbar(command=self.contents.yview, orient=VERTICAL)
                 yscroll1.grid(row=rowcontents, column=coltext+1, sticky=N+S)
@@ -209,7 +196,6 @@ class Application(Frame):
 
                 self.currently_selected = '' #keeps in memory what exploit has last been selected
 
-
                 self.index_index = {} #dictionary to make the correspondence between exploit id and position in list
                 #clean_rc_etc()
                 self.fill_with_all()
@@ -221,7 +207,6 @@ class Application(Frame):
                 self.listbox1.delete(0,END)
                 for k, line in enumerate(self.lines):
                         if k >0:
-
                                 alts = self.alternatives(line)
                                 for j, alt in enumerate(alts):
                                         index = alt.split(',')[0].strip('"')
@@ -283,11 +268,8 @@ class Application(Frame):
                 global f6
                 global f7
                 alternatives = []
-
-                #m = f4.search(name)
                 m = f6.search(name)
                 if m:
-
                         alts = m.group(0).split('Kernel ')[1].split('/')
                         for alt in alts:
                                 alt_name = re.sub(f6, 'Kernel ' + alt, name)
@@ -357,11 +339,9 @@ class Application(Frame):
                         if a_split != 'x':
                                 a = int(a_split)
 
-
                         b_split = test.split('.')[i].strip()
                         if b_split != 'x':
                                 b = int(b_split)
-
 
                         if a < b:    # target < test
                                 c = 0
@@ -437,7 +417,6 @@ class Application(Frame):
                 for l, line in enumerate(self.filtered_old):
                         m = f3.search(line)
                         if m:
-
                                 lower = m.group(0).split('Kernel ')[1].split('<')[0]
                                 upper = m.group(0).split('<')[1]
                                 comp_lower = self.compare_version(target, lower)
@@ -481,8 +460,6 @@ class Application(Frame):
                                                                         self.filtered_new.append(line)
                 self.count_zploits()
                 return self.filtered_new			
-
-
 
         def get_list(self,event):
             """
@@ -590,25 +567,20 @@ class Application(Frame):
 
         def copy_file(self):
             filename = self.currently_selected.split('/')[-1]
-
             if self.enter2.get().endswith('/'):
                 out_file = self.enter2.get() + filename
             else:
                 out_file = self.enter2.get() + '/' + filename
-
-
             copy_cmd=subprocess.Popen(['cp', self.currently_selected, out_file], stdout=subprocess.PIPE)
             out_copy=copy_cmd.communicate()[0].rstrip('\n')
             print 'Output of copy command: ',out_copy
 
         def compile_file(self):
             filename = self.currently_selected.split('/')[-1]
-
             if self.enter2.get().endswith('/'):
                 out_file = self.enter2.get()
             else:
                 out_file = self.enter2.get() + '/'
-
             gcc_cmd = self.enter3.get()
             if '$in' in gcc_cmd:
                     gcc_cmd = gcc_cmd.replace('$in', self.currently_selected)
