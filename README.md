@@ -18,3 +18,18 @@ The goal of this tool is to simplify this process and is especially targeted tow
 It also allows to read the content of each exploit in real time by just clicking on their name, and to easily copy or compile them to any location in our filesystem. Candidate exploits can be discarded by just clicking a button, so when we determine an exploit is not interesting for our case, it will not bother us anymore.
 
 This program is a single python file, and the dependencies used are included in the standard python distribution. Tkinter is used for the GUI, so there is no need to install anything, it runs out of the box. The only requirement is that exploit database is located in /usr/share/exploitdb. This script scans the files.csv file to find exploits, and then looks for particular exploits in their corresponding location, normally in the subfolders under this same directory in Kali Linux.
+
+
+*** FORMATS ACCEPTED BY THE SEARCH TOOL FOR LINUX KERNEL EXPLOITS (as they are in /usr/share/exploitdb/files.csv) ***
+
+- Exact kernel version (example: "Linux Kernel 2.6.10 - Local Denial of Service")
+- Exploits under a certain value (example: "Linux Kernel < 2.6.16.18 - Netfilter NAT SNMP Module Remote Denial of Service")
+- Exploits with "x" in the kernel version (example: "Linux Kernel 2.6.x - 'sys_timer_create()' Local Denial of Service"). In this case, "x" is accepted as the value we need if all the other non-x fields in the exploit version match.
+- Exploit for kernels with release candidates, etc (example: "Linux Kernel 2.6.12-rc4 - 'ioctl_by_bdev' Local Denial of Service"). In this case, the extra stuff (-rc4, etc, is removed for simplicity)
+- Exploit for a kernel version lower than some version (example: "Linux Kernel < 2.4.36.9/2.6.27.5 - Unix Sockets Local Kernel Panic (Denial of Service)",2008-11-11,"Andrea Bittau")
+- Exploit for alternative versions (example: "Linux Kernel 2.6.27.7-generic/2.6.18/2.6.24-1 - Local Denial of Service"). Each alterntive is presented in a new line in the exploit list, with an index between parenthesis indicating which alternative is for a given version, like (1), (2), etc. This simplifies the program.
+- Exploits for kernels lying inside a range of kernels (example: "Linux Kernel 2.6.9 < 2.6.25 (RHEL 4) - utrace and ptrace Local Denial of Service (1)",2008-06-25,"Alexei Dobryanov")
+
+or any combination of the former.
+
+
