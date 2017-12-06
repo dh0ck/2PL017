@@ -1,7 +1,7 @@
 # 2PL017
 Effectively search the Exploit-DB
 
-This script opens a GUI, written in python, to help find exploits from the exploit database, located in Kali linux in /usr/share/exploitdb.
+This script opens a GUI, written in python, to help find exploits from the exploit database, located in Kali linux in /usr/share/exploitdb. There is a video tutorial in https://www.youtube.com/watch?v=ysRmz4s58jM&t=700s
 
 At present, there are some limitations in the available tool "searchsploit", and the online search, including:
 - Having to solve super annoying captchas.
