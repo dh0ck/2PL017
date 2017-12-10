@@ -1,0 +1,4 @@
+- Add Exploit-DB ID filter
+- Add format filter
+- Allow local copy of the modified exploit, and checkbutton to decide if to use the local copy or the original for $in
+- Interactive Applied filters entry
