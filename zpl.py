@@ -1,7 +1,8 @@
 #!/usr/bin/python
 
 # 2PL017, by Antonio Lara, 2017
-# Kudos to this guy, I used some of this stuff to start building the GUI: https://www.daniweb.com/programming/software-development/code/216827/working-with-a-tkinter-listbox-python
+# I used some of this stuff to start building the GUI:
+# https://www.daniweb.com/programming/software-development/code/216827/working-with-a-tkinter-listbox-python
 '''MIT License
 
 Copyright (c) 2017 antlarac
@@ -38,6 +39,7 @@ import subprocess
 from Tkinter import *
 import tkFileDialog
 import re
+import glob
 import random
 
 ALL = W+E+N+S
@@ -49,11 +51,13 @@ row_logo = 0
 row_filters = 1
 row_filters1 = 2
 row_filters = 3
-row_listbox = 4
-row_buttons_top = 5
-rowcontents = 6
-row_new_name = 7
-row_buttons_bottom = 8
+row_filters_a=4
+row_listbox = 5
+row_buttons_top = 6
+row_title = 7
+rowcontents = 8
+row_new_name = 9
+row_buttons_bottom = 10
 
 main_width = 50
 
@@ -81,11 +85,11 @@ class Application(Frame):
                 l0.grid(row=row_logo, column=0)
 
                 frame1 = Frame(root, width=main_width)
-                frame1.grid(row=row_filters, column=0)
+                frame1.grid(row=row_filters, column=0, sticky=E+W)
 
                 self.name_filter = Entry(frame1)
                 self.name_filter.insert(END, "Name")
-                self.name_filter.pack(fill=X,side=LEFT)
+                self.name_filter.pack(fill=X,side=LEFT, expand=True)
                 self.name_filter.bind('<Return>', self.apply_name_filter)
                 self.name_filter.bind('<KP_Enter>', self.apply_name_filter)
 
@@ -99,7 +103,7 @@ class Application(Frame):
                 self.type_filter.bind('<Return>', self.apply_type_filter)
                 self.type_filter.bind('<KP_Enter>', self.apply_type_filter)
                 self.type_filter.insert(END, "Type")
-                self.type_filter.pack(fill=X,side=LEFT) 
+                self.type_filter.pack(fill=X,side=LEFT,expand=True) 
                 self.var_type = IntVar()
                 self.neg_type = Checkbutton(frame1, text="neg?", variable=self.var_type)
                 self.neg_type.pack(fill=X,side=LEFT)
@@ -111,8 +115,55 @@ class Application(Frame):
                 self.version_filter.bind('<Return>', self.apply_version_filter)
                 self.version_filter.bind('<KP_Enter>', self.apply_version_filter)
                 self.version_filter.insert(END, "Linux Kernel Version")
-                self.version_filter.pack(fill=X,side=LEFT)
+                self.version_filter.pack(fill=X,side=LEFT, expand=True)
 
+                frame_a = Frame(root, width=main_width)
+                frame_a.grid(row=row_filters_a, column=0, sticky=E+W)
+
+                self.index_filter = Entry(frame_a)
+                self.index_filter.bind('<Return>', self.apply_index_filter)
+                self.index_filter.bind('<KP_Enter>', self.apply_index_filter)
+                self.index_filter.insert(END, 'E-DB index')
+                self.index_filter.pack(fill=X, side=LEFT, expand=True)
+
+
+                self.format_filter = Entry(frame_a)
+                self.format_filter.bind('<Return>', lambda event, fmt='$check': self.apply_format_filter(fmt))
+                self.format_filter.bind('<KP_Enter>', lambda event, fmt='$check': self.apply_format_filter(fmt))
+                self.format_filter.insert(END, 'Format')
+                self.format_filter.pack(fill=X, side=LEFT, expand=True)
+
+                self.button_py = Button(frame_a,text=".py",command=lambda fmt='py': self.apply_format_filter(fmt))
+                self.button_py.pack(side=LEFT, expand=True, fill=X)
+
+                self.button_pl = Button(frame_a,text=".pl",command=lambda fmt='pl': self.apply_format_filter(fmt))
+                self.button_pl.pack(side=LEFT, expand=True, fill=X)
+
+                self.button_c = Button(frame_a,text=".c",command=lambda fmt='c': self.apply_format_filter(fmt))
+                self.button_c.pack(side=LEFT, expand=True, fill=X)
+
+                self.button_rb = Button(frame_a,text=".rb",command=lambda fmt='rb': self.apply_format_filter(fmt))
+                self.button_rb.pack(side=LEFT, expand=True, fill=X)
+
+                self.button_sh = Button(frame_a,text=".sh",command=lambda fmt='sh': self.apply_format_filter(fmt))
+                self.button_sh.pack(side=LEFT, expand=True, fill=X)
+
+                self.button_php = Button(frame_a,text=".php",command=lambda fmt='php': self.apply_format_filter(fmt))
+                self.button_php.pack(side=LEFT, expand=True, fill=X)
+
+                self.button_java = Button(frame_a,text=".java",command=lambda fmt='java': self.apply_format_filter(fmt))
+                self.button_java.pack(side=LEFT, expand=True, fill=X)
+
+                self.button_txt = Button(frame_a,text=".txt",command=lambda fmt='txt': self.apply_format_filter(fmt))
+                self.button_txt.pack(side=LEFT, expand=True, fill=X)
+
+                self.button_txt = Button(frame_a,text=".html",command=lambda fmt='html': self.apply_format_filter(fmt))
+                self.button_txt.pack(side=LEFT, expand=True, fill=X)
+
+                self.var_fmt = IntVar()
+                self.neg_fmt = Checkbutton(frame_a, text="neg?", variable=self.var_fmt)
+                self.neg_fmt.pack(fill=X,side=LEFT)                
+                
                 '''____________________________________________'''
 
                 frame2 = Frame(root, width=main_width)
@@ -164,9 +215,18 @@ class Application(Frame):
 
                 '''____________________________________________'''
                 
-                self.contents = Text(root)
-                self.contents.grid(row=rowcontents, column=0, columnspan=1,sticky="ew")
+                frame_title = Frame(root, width=main_width)
+                frame_title.grid(row=row_title, column=0,columnspan=1,sticky=E+W)
+                title_label=Label(frame_title, text='Selected exploit: ')
+                title_label.pack(side=LEFT)
+                self.title_box = Entry(frame_title)
+                self.title_box.pack(side=LEFT, expand=True, fill=X)
 
+                frame_text=Frame(root,width=main_width)
+                frame_text.grid(row=rowcontents,column=0,columnspan=1,sticky='ewns')
+                self.contents = Text(frame_text)
+                #self.contents.grid(row=rowcontents, column=0, columnspan=1,sticky='ewns')
+                self.contents.pack(side=LEFT, expand=True, fill=X)
                 coltext=0
                 yscroll1 = Scrollbar(command=self.contents.yview, orient=VERTICAL)
                 yscroll1.grid(row=rowcontents, column=coltext+1, sticky=N+S)
@@ -180,6 +240,10 @@ class Application(Frame):
                 frame4 = Frame(root, width=main_width)
                 frame4.grid(row=row_new_name, column=0,sticky=E+W)
 
+                self.var_tmp = IntVar()
+                self.neg_fmt = Checkbutton(frame4, text="Use temp?", variable=self.var_tmp)
+                self.neg_fmt.pack(side=LEFT)
+                
                 self.output_button = Button(frame4,text='Output path: ',command=self.set_out)
                 self.output_button.pack(side=LEFT)
                 suggested_path = '/var/www/html/'
@@ -275,9 +339,14 @@ class Application(Frame):
                 self.enter3.delete(0,END)
                 cs = self.currently_selected.split('/')[-1]
                 self.enter3.insert(END, 'gcc $in -o $out/{}'.format(cs.split('.')[0]))
-                self.contents.insert(END, seltext + '\n')
-                self.contents.insert(END, loc1 )
-                self.contents.insert(END, '\n' + '-'*max(len(loc1),len(seltext)) + '\n\n' )
+
+                self.title_box.delete(0,END)
+                self.title_box.insert(END, seltext + ' ---> ')
+                self.title_box.insert(END, loc1 )
+                #self.title_box.insert(END, '\n' + '-'*max(len(loc1),len(seltext)) + '\n\n' )
+                #self.contents.insert(END, seltext + '\n')
+                #self.contents.insert(END, loc1 )
+                #self.contents.insert(END, '\n' + '-'*max(len(loc1),len(seltext)) + '\n\n' )
                 self.contents.insert(END, cat[0] )
             except IndexError:
                 pass
@@ -313,7 +382,7 @@ class Application(Frame):
         def kernel_name(self):
                 self.use_name_filter("Linux Kernel", 0)
 
-        def use_name_filter(self,name, neg):
+        def use_name_filter(self,name, neg): #called by apply_name_filter
             self.filtered_old = self.listbox1.get(0,END)
             self.filtered_new = []
             for line in self.filtered_old:
@@ -331,7 +400,7 @@ class Application(Frame):
             self.count_zploits()
             return self.filtered_old
 
-        def use_type_filter(self, type_, neg):
+        def use_type_filter(self, type_, neg): #called by apply_type_filter
             self.filtered_old = self.listbox1.get(0,END)
             self.filtered_new = []
             for line in self.filtered_old:
@@ -509,15 +578,60 @@ class Application(Frame):
             self.enter3.delete(0,END)
             cs = self.currently_selected.split('/')[-1]
             self.enter3.insert(END, 'gcc $in -o $out/{}'.format(cs.split('.')[0]))
-            self.contents.insert(END, seltext + '\n')
-            self.contents.insert(END, loc1 )
-            self.contents.insert(END, '\n' + '-'*max(len(loc1),len(seltext)) + '\n\n' )
+
+            self.title_box.delete(0,END)
+            self.title_box.insert(END, seltext + ' ---> ')
+            self.title_box.insert(END, loc1 )
+            #self.contents.insert(END, seltext + '\n')
+            #self.contents.insert(END, loc1 )
+            #self.contents.insert(END, '\n' + '-'*max(len(loc1),len(seltext)) + '\n\n' )
             self.contents.insert(END, cat[0] )
 
         def clr_filters(self):
                 self.enter1.delete(0, 'end')
                 self.fill_with_all()
 
+        def apply_index_filter(self, event):
+                self.filtered_old = self.listbox1.get(0, END)
+                self.filtered_new = []
+                edb_index = self.index_filter.get()
+                filter='I: ' + edb_index 
+                for line in self.filtered_old:
+                        if edb_index == line.split(' ')[0]:
+                                self.listbox1.delete(0, END)
+                                self.listbox1.insert(END, line)
+                                self.enter1.insert(END, filter)
+                                break
+               
+
+        def apply_format_filter(self, format):
+                neg = self.var_fmt.get()
+                if format == '$check':
+                        format = self.format_filter.get()
+                if format == 'Format':
+                        filter = ''
+                else:
+                        filter = 'F: ' + format + ' (n)'*neg + ', '
+
+                self.filtered_old = self.listbox1.get(0,END)
+                self.filtered_new = []
+                
+                for line in self.filtered_old:
+                        if neg == 0:
+                                if format.lower() == line.split('[')[1].split(']')[0].lower():
+                                        self.filtered_new.append(line)
+                        else:
+                                if format.lower() != line.split('[')[1].split(']')[0].lower():
+                                        self.filtered_new.append(line)
+                self.filtered_old = self.filtered_new
+                self.listbox1.delete(0, END)
+                for item in self.filtered_new:
+                        self.listbox1.insert(END, item)
+                self.filtered_new = []
+                self.count_zploits()
+                self.enter1.insert(END,filter)
+                return self.filtered_old
+                
         def apply_name_filter(self, event):
                 neg_name = self.var_name.get()
                 f_name = self.name_filter.get()
@@ -528,7 +642,8 @@ class Application(Frame):
                                 f_name = 'Linux Kernel'
                         filter = 'N: ' + f_name + ' (n)'*neg_name + ', '
                 self.enter1.insert(END, filter)
-                self.use_name_filter(f_name, neg_name)
+                if filter != '':
+                        self.use_name_filter(f_name, neg_name)
 
         def apply_type_filter(self, event):
                 neg_type = self.var_type.get()
@@ -538,7 +653,8 @@ class Application(Frame):
                 else:
                         filter = 'T: ' + f_type + ' (n)'*neg_type + ', '
                 self.enter1.insert(END, filter)
-                self.use_type_filter(f_type, neg_type)
+                if filter != '':
+                        self.use_type_filter(f_type, neg_type)
 
         def apply_version_filter(self, event):
                 f_version = self.version_filter.get()
@@ -551,7 +667,7 @@ class Application(Frame):
                 filtered_exact = self.use_exact_version_filter(f_version)
                 filtered_upper = self.use_upper_version_filter(f_version)
                 filtered_interval = self.use_interval_version_filter(f_version)
-                #faltan los que tienene alternativas separadas por /
+                
 
                 filtered = sorted(list(set(filtered_exact + filtered_upper + filtered_interval)))
                 self.listbox1.delete(0, END)
@@ -586,15 +702,37 @@ class Application(Frame):
             fout.writelines(temp_list)
             fout.close()
 
+        def save_tmp_copy(self):
+            tmp_files = glob.glob('/tmp/*')
+            name = self.currently_selected.split('/')[-1].split('.')
+            while True:
+                    name1 = name[0] + '_' + str(random.randint(1,999)).zfill(3) + '.' + name[1].lstrip('[').rstrip(']')[0]
+                    if name1 not in tmp_files:
+                            break
+            file = self.currently_selected
+            tx = self.contents.get("1.0",END)
+            filename = '/tmp/' + name1
+            f = open(filename, 'w')
+            f.write(tx)
+            f.close()
+            return filename
+            
         def copy_file(self):
             filename = self.currently_selected.split('/')[-1]
             if self.enter2.get().endswith('/'):
-                out_file = self.enter2.get() + filename
+                    out_file = self.enter2.get() + filename
             else:
-                out_file = self.enter2.get() + '/' + filename
-            copy_cmd=subprocess.Popen(['cp', self.currently_selected, out_file], stdout=subprocess.PIPE)
-            out_copy=copy_cmd.communicate()[0].rstrip('\n')
-            print 'Output of copy command: ',out_copy
+                    out_file = self.enter2.get() + '/' + filename
+            if self.var_tmp.get()==0:
+                    copy_cmd=subprocess.Popen(['cp', self.currently_selected, out_file], stdout=subprocess.PIPE)
+                    out_copy=copy_cmd.communicate()[0].rstrip('\n')
+                    print 'Output of copy command: ',out_copy
+            else:
+                    tx = self.contents.get("1.0",END)
+                    print tx
+                    f = open(out_file, 'w')
+                    f.write(tx)
+                    f.close()
 
         def compile_file(self):
             filename = self.currently_selected.split('/')[-1]
@@ -603,8 +741,14 @@ class Application(Frame):
             else:
                 out_file = self.enter2.get() + '/'
             gcc_cmd = self.enter3.get()
-            if '$in' in gcc_cmd:
-                    gcc_cmd = gcc_cmd.replace('$in', self.currently_selected)
+
+            if self.var_tmp.get()==0:
+                    if '$in' in gcc_cmd:
+                            gcc_cmd = gcc_cmd.replace('$in', self.currently_selected)
+            else:
+                    filename = self.save_tmp_copy()
+                    if '$in' in gcc_cmd:
+                            gcc_cmd = gcc_cmd.replace('$in', filename) 
             if '$out' in gcc_cmd:
                     gcc_cmd = gcc_cmd.replace('$out/', out_file)
 
