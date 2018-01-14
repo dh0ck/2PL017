@@ -35,11 +35,11 @@ or any combination of the former.
 ======================================   SHORT TUTORIAL   ============================================
 Last update: 14 Jan 2018
 
-You can search exploits based on different criteria. For each of them, there is a certain filter. Most of the filters have the "negative" option. Checking the "neg?" box to the right side of a filter will apply negatively the filter. That is, excluding the matched results. To apply a filter, simply type on the corresponding field what you want to filter, and press enter.
+You can search exploits based on different criteria. For each of them, there is a certain filter. Most of the filters have the "negative" option. Checking the "neg?" box to the right side of a filter will apply negatively the filter. That is, excluding the matched results. To apply a filter, simply type on the corresponding field what you want to filter, and press enter. Pressing the clear filters button clears the applied filters and the whole exploit-db is presented again.
 
 - Name filter: show exploits containing the searched string in their name.
 - Type filter: show exploits of a given type (dos, remote, local, etc).
-- Format filter: show exploits of a given format (py, txt, c, etc).
+- Format filter: show exploits of a given format (py, txt, c, etc). Some buttons are present for the usual types.
 - Index filter: show the exploit of the given exploit-db index.
 - Kernel filter: show the "linux kernel" exploits that are compatible with the given exploit. As explained above, there are several ways of specifying kernel exploits in the exploit database. Using regular expresions, all the exploits relevant to the kernel version you type (it can have any number of "fields" separated by a dot ".", from one to four (that is, from x to x.x.x.x)).
 
