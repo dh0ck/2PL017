@@ -32,4 +32,17 @@ This program is a single python file, and the dependencies used are included in 
 
 or any combination of the former.
 
+======================================   SHORT TUTORIAL   ============================================
+Last update: 14 Jan 2018
 
+You can search exploits based on different criteria. For each of them, there is a certain filter. Most of the filters have the "negative" option. Checking the "neg?" box to the right side of a filter will apply negatively the filter. That is, excluding the matched results. To apply a filter, simply type on the corresponding field what you want to filter, and press enter.
+
+- Name filter: show exploits containing the searched string in their name.
+- Type filter: show exploits of a given type (dos, remote, local, etc).
+- Format filter: show exploits of a given format (py, txt, c, etc).
+- Index filter: show the exploit of the given exploit-db index.
+- Kernel filter: show the "linux kernel" exploits that are compatible with the given exploit. As explained above, there are several ways of specifying kernel exploits in the exploit database. Using regular expresions, all the exploits relevant to the kernel version you type (it can have any number of "fields" separated by a dot ".", from one to four (that is, from x to x.x.x.x)).
+
+Clicking on the selected exploit in the listbox display its contents in the large text field below. The contents of it can be directly edited in the text field, and a local copy can be created, both of the original exploit, or of the modified one, with the options at the bottom. 
+
+The compilation command actually can also execute python scripts, or perl, etc. It uses a special syntax, where $out is the output path specified in the "output path" to the left of the compilation command, and $in is the input file, either the original one or the modified, as indicated by us.
