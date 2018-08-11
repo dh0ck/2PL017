@@ -25,14 +25,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.'''
 
-logo = (
-"                                    \n" +
+logo = ("")
+'''"                                    \n" +
 "               __                   \n" +
 "              /\ \                  \n" +
 "             / /\ \                 \n" +
 "            / /  \ \                \n" +
 "           / /____\_\               \n" +
-"          /_/________\              \n")
+"          /_/________\              \n")'''
 
 
 import subprocess
@@ -41,6 +41,7 @@ import tkFileDialog
 import re
 import glob
 import random
+import os.path
 
 ALL = W+E+N+S
 
@@ -270,7 +271,10 @@ class Application(Frame):
 
                 self.curr_index = 0
                 db_path = "/usr/share/exploitdb/"
-                path = "/usr/share/exploitdb/files.csv"
+                path1 = "/usr/share/exploitdb/files.csv"
+                if not os.path.isfile(path1):
+                        path1 = "/usr/share/exploitdb/files_exploits.csv"
+                path = path1
                 filters = []
                 f = open(path, 'r')
                 self.lines = f.readlines()
