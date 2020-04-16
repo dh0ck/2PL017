@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# 2PL017, by Antonio Lara, 2017
+# 2PL017, 2017
 # I used some of this stuff to start building the GUI:
 # https://www.daniweb.com/programming/software-development/code/216827/working-with-a-tkinter-listbox-python
 '''MIT License
