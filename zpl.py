@@ -5,7 +5,7 @@
 # https://www.daniweb.com/programming/software-development/code/216827/working-with-a-tkinter-listbox-python
 '''MIT License
 
-Copyright (c) 2017 antlarac
+Copyright (c) 2017 dh0ck
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
